@@ -1,0 +1,66 @@
+321CC Anton Stefan                
+                        TEMA4: Client Web. Comunicaţie cu REST API.
+
+
+Durata: aproximativ 20 de ore.
+
+Implementare:
+Am ales sa folosesc parson pentru ca asa era sugerat in enunt si e o biblioteca uzuala.
+De asemenea, am utilizat in rezolvarea temei si o parte din fisierele din laboratorul 10,
+implementand in plus si funcitonalitatea de DELETE.
+
+Clientul ruleaza pana la intalnirea comenzii exit.
+
+In main, citim user inputul, il convertim intr-o comanda, si executam comanda
+specfica case-ului respectiv. Putem avea urmatoarele inputuri
+(register, login, enter_library, get_books, get_book, add_book, delete_book, logout si exit)
+
+Am folosit urmatoarele functii in cadrul implementarii pentru aceste inputuri:
+
+Se ocupa cu dirijarea mesajelor catre server.
+"create_and_send_msg"---este utilizata pentru a crea și a trimite mesaje catre 
+                        |server în funcție de tipul de cerere furnizat (GET, POST, DELETE).
+                         ---"get_send_msg", "post_send_msg" și "delete_send_msg" stabilesc o 
+                            |conexiune ("establish_connection"), creează și trimit cererea 
+                            |corespunzătoare, iar apoi închid conexiunea. 
+                             ---"establish_connection" deschide o conexiune catre server 
+                                |folosind adresa IP a serverului si numarul portului furnizate.
+                                
+
+Se ocupa cu tratarea comenzilor specifice.
+"user_registration"---permite utilizatorului sa se inregistreze furnizand un nume de utilizator 
+                        si o parola. Aceasta construieste un obiect JSON care contine numele de 
+                        utilizator si parola, trimite o cerere POST catre server pentru inregistrare
+                        si verific cu ajutorul bibliotecii parson daca a fost intors un mesaj de eroare,
+                        caz in care il afisez.
+
+"user_login"---permite utilizatorului sa se autentifice. Acesta construieste un obiect JSON care contine 
+                credintialele, trimite o cerere POST catre server. Daca autentificarea e reusita se salveaza
+                cookie-ul de sesiune.
+
+"enter_library"---verific daca utilizatorul este autentificat si apoi trimit o cerere  GET catre server 
+                    pentru a accesa biblioteca. Daca s-a realizat cu succes retin tokenul de autentificare 
+                    pentru cererile de autentificare ulterioare.
+
+"get_books"---afiseaza toate cartile din librarie prin trimiterea unei cereri GET si creez un JSON_ARRAY 
+                din raspunsul primit. Daca nu sunt carti afisez un mesaj, altfel parcurg fiecare carte din 
+                ARRAY si il afisez.
+
+"get_book"---afiseaza informatii despre o anumita carte cu un ID corespunzator prin trimiterea unei cereri GET.
+
+"add_book"---verific daca utilizatorul este logat si are acces token, caz in care trimit o cerere de tip POST,
+                cu un obiect JSON construit din datelele de la inputul userului.
+
+"delete_book"---sterge o carte cu un anumit ID, se introduce ID-ul, se construieste noul url si apoi se trimite o 
+                cerere de tip DELETE serverului, verificam pentru erori, si afisam raspunsul.
+
+"logout"---trimite o cerere GET catre server pentru logout in care resetez session_cookies, cookies_counter 
+            si token_aut si afisez un mesaj de delogare.
+
+"exit"---se termina programul
+
+
+
+
+
+
